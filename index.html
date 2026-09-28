@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Kuis Uraian PJOK Kelas XII - Gaya Hidup Sehat & Permainan Bola Besar</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            950: '#0b0f19',
+                        },
+                        neon: {
+                            cyan: '#06b6d4',
+                            purple: '#a855f7',
+                            pink: '#ec4899',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            blue: '#3b82f6'
+                        }
+                    },
+                    boxShadow: {
+                        'glow-purple': '0 0 25px -5px rgba(168, 85, 247, 0.4)',
+                        'glow-cyan': '0 0 25px -5px rgba(6, 182, 212, 0.4)',
+                        'glow-indigo': '0 0 25px -5px rgba(79, 70, 229, 0.4)',
+                        'glow-emerald': '0 0 25px -5px rgba(16, 185, 129, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-touch {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .fluid-title {
+            font-size: clamp(1.3rem, 4vw, 2.25rem);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 0.8);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(6, 182, 212, 0.8);
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-950 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
+
+    <!-- Sticky Application Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80 px-3 sm:px-6 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+            
+            <!-- Brand Identity -->
+            <div class="flex items-center gap-2.5 cursor-pointer" onclick="confirmResetHome()">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-neon-cyan via-brand-600 to-neon-purple p-0.5 shadow-glow-cyan flex-shrink-0">
+                    <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-lg">
+                        🏀
+                    </div>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm sm:text-base leading-tight text-white flex items-center gap-1.5">
+                        <span>Kuis Uraian PJOK XII</span>
+                        <span class="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-medium">
+                            Kesehatan & Bola Besar
+                        </span>
+                    </h1>
+                    <p class="text-[11px] text-slate-400 truncate max-w-[180px] sm:max-w-none">
+                        Gaya Hidup Sehat • Sedentary • Basket • Sepak Bola • Voli
+                    </p>
+                </div>
+            </div>
+
+            <!-- Header Quick Tools -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleSound()" id="sound-toggle-btn" class="btn-touch p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800 transition-all flex items-center justify-center gap-1.5 text-xs font-semibold" title="Suara">
+                    <span id="sound-icon">🔊</span>
+                    <span class="hidden md:inline">Suara</span>
+                </button>
+
+                <button onclick="toggleInfoModal()" class="btn-touch p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800 transition-all flex items-center justify-center gap-1.5 text-xs font-semibold">
+                    <span class="text-neon-cyan">ℹ️</span>
+                    <span class="hidden md:inline">Kisi-Kisi</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Body Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col justify-center">
+
+        <!-- ================= SCREEN 1: LANDING / START SCREEN ================= -->
+        <section id="home-screen" class="space-y-6 sm:space-y-8 max-w-4xl mx-auto w-full py-2 sm:py-4">
+            
+            <!-- Hero Banner -->
+            <div class="text-center space-y-3 sm:space-y-4">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/30 shadow-glow-cyan text-xs font-semibold text-cyan-300">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    Evaluasi Mandiri 15 Soal Uraian PJOK Kelas XII
+                </div>
+
+                <h2 class="fluid-title font-extrabold tracking-tight text-white leading-tight">
+                    Uji Pemahaman Uraian <br class="hidden sm:inline"><span class="gradient-text">PJOK & Kebugaran Jasmani XII</span>
+                </h2>
+
+                <p class="text-slate-400 text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed px-2">
+                    Latihan komprehensif mencakup Gaya Hidup Sehat, Bahaya Sedentary, Taktik & Posisi Bola Basket, Peraturan Sepak Bola, serta Strategi & Sistem Pertahanan Bola Voli.
+                </p>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4">
+                <div class="glass-panel p-3.5 sm:p-4 rounded-2xl border border-slate-800/80 text-center space-y-1">
+                    <span class="text-xl sm:text-2xl">📝</span>
+                    <p class="text-[11px] text-slate-400">Bentuk Soal</p>
+                    <p class="text-sm sm:text-base font-bold text-white">15 Uraian / Essay</p>
+                </div>
+                <div class="glass-panel p-3.5 sm:p-4 rounded-2xl border border-slate-800/80 text-center space-y-1">
+                    <span class="text-xl sm:text-2xl">🏃‍♂️</span>
+                    <p class="text-[11px] text-slate-400">Mata Pelajaran</p>
+                    <p class="text-sm sm:text-base font-bold text-white">PJOK Kelas XII</p>
+                </div>
+                <div class="glass-panel p-3.5 sm:p-4 rounded-2xl border border-slate-800/80 text-center space-y-1">
+                    <span class="text-xl sm:text-2xl">🎯</span>
+                    <p class="text-[11px] text-slate-400">Evaluasi</p>
+                    <p class="text-sm sm:text-base font-bold text-white">Deteksi Kata Kunci</p>
+                </div>
+                <div class="glass-panel p-3.5 sm:p-4 rounded-2xl border border-slate-800/80 text-center space-y-1">
+                    <span class="text-xl sm:text-2xl">💡</span>
+                    <p class="text-[11px] text-slate-400">Pembahasan</p>
+                    <p class="text-sm sm:text-base font-bold text-white">Jawaban Ideal Baku</p>
+                </div>
+            </div>
+
+            <!-- Kisi-Kisi Breakdown Accordion -->
+            <div class="glass-panel p-4 sm:p-6 rounded-3xl border border-slate-800/80 space-y-3">
+                <div class="flex items-center justify-between cursor-pointer" onclick="toggleScopeDetails()">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-lg">
+                            📜
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-sm sm:text-base">Rincian Materi Kisi-Kisi PJOK</h3>
+                            <p class="text-[11px] sm:text-xs text-slate-400">Klik untuk membuka rincian sub-materi yang diuji</p>
+                        </div>
+                    </div>
+                    <span id="scope-arrow" class="text-slate-400 transition-transform duration-300 text-sm">▼</span>
+                </div>
+
+                <div id="scope-details" class="hidden pt-3 border-t border-slate-800/80 space-y-3 text-xs text-slate-300">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="p-3.5 bg-slate-900/70 rounded-2xl border border-slate-800">
+                            <span class="font-bold text-neon-cyan block mb-1">1. Gaya Hidup Sehat & Sedentary</span>
+                            <ul class="list-disc list-inside space-y-1 text-slate-400 text-[11px] sm:text-xs">
+                                <li>Faktor, pengertian & manfaat gaya hidup sehat</li>
+                                <li>Pengertian perilaku sedentary & bahaya dampaknya</li>
+                                <li>Perbandingan aktivitas fisik vs perilaku sedenter</li>
+                            </ul>
+                        </div>
+                        <div class="p-3.5 bg-slate-900/70 rounded-2xl border border-slate-800">
+                            <span class="font-bold text-neon-purple block mb-1">2. Permainan Bola Besar (Basket, Sepak Bola, Voli)</span>
+                            <ul class="list-disc list-inside space-y-1 text-slate-400 text-[11px] sm:text-xs">
+                                <li>Basket: Posisi (PG/SG/SF/PF/C), Lay Up, Zone Defense vs Man-to-Man</li>
+                                <li>Sepak Bola: Pengertian, Peraturan IFAB, Offside & Handball</li>
+                                <li>Voli: Posisi (Setter, Spiker, Libero, Blocker), Blocking & Digging, Taktik</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mode Selection Card -->
+            <div class="glass-panel p-4 sm:p-6 rounded-3xl border border-slate-800 space-y-4">
+                <h3 class="font-bold text-white text-sm sm:text-base flex items-center gap-2">
+                    <span>⚡ Pilih Mode Pengerjaan</span>
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div onclick="selectMode('latihan')" id="mode-card-latihan" class="p-4 rounded-2xl border-2 border-brand-500 bg-brand-500/10 cursor-pointer transition-all flex items-start gap-3">
+                        <input type="radio" name="quiz-mode" id="radio-latihan" checked class="mt-1 accent-brand-500">
+                        <div>
+                            <span class="font-bold text-xs sm:text-sm text-white block">Mode Latihan (Petunjuk & Uji Konsep)</span>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Dilengkapi petunjuk kata kunci dan tombol pengujian instan pada setiap soal.</p>
+                        </div>
+                    </div>
+
+                    <div onclick="selectMode('ujian')" id="mode-card-ujian" class="p-4 rounded-2xl border-2 border-slate-800 bg-slate-900/50 cursor-pointer transition-all flex items-start gap-3 hover:border-slate-700">
+                        <input type="radio" name="quiz-mode" id="radio-ujian" class="mt-1 accent-brand-500">
+                        <div>
+                            <span class="font-bold text-xs sm:text-sm text-white block">Mode Ujian / Evaluasi Uraian</span>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Simulasi pengerjaan ujian mandiri. Evaluasi kata kunci dibuka menyeluruh di akhir.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="startQuiz()" class="w-full btn-touch py-4 rounded-2xl bg-gradient-to-r from-neon-cyan via-brand-600 to-neon-purple hover:opacity-95 text-white font-extrabold text-sm sm:text-base shadow-glow-cyan transition-all transform active:scale-[0.98] flex items-center justify-center gap-2">
+                    <span>Mulai Kerjakan 15 Soal Uraian PJOK</span>
+                    <span class="text-lg">🚀</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= SCREEN 2: ACTIVE QUIZ WORKSPACE ================= -->
+        <section id="quiz-screen" class="hidden space-y-4 sm:space-y-6 max-w-6xl mx-auto w-full">
+            
+            <!-- Top Status Bar -->
+            <div class="glass-panel p-3.5 sm:p-5 rounded-2xl border border-slate-800 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <span class="px-3 py-1 rounded-xl bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 text-xs font-bold font-mono">
+                        SOAL <span id="current-q-num">1</span> / 15
+                    </span>
+                    <span id="question-topic-badge" class="px-2.5 py-1 rounded-xl bg-slate-900 text-slate-300 text-[11px] font-medium truncate max-w-[130px] sm:max-w-xs border border-slate-800">
+                        Gaya Hidup Sehat
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-slate-200 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
+                        <span>⏱️</span>
+                        <span id="timer-text" class="text-neon-cyan">00:00</span>
+                    </div>
+
+                    <button onclick="toggleMobileNavDrawer()" class="lg:hidden btn-touch px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1">
+                        <span>📋 Grid</span>
+                    </button>
+
+                    <button onclick="confirmFinishEarly()" class="hidden sm:flex btn-touch px-3.5 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold transition-all">
+                        Selesai 🏁
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Workspace Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
+                
+                <!-- Left Essay Input Panel (Column 8) -->
+                <div class="lg:col-span-8 glass-panel p-5 sm:p-8 rounded-3xl border border-slate-800 space-y-5 sm:space-y-6 flex flex-col justify-between min-h-[460px]">
+                    
+                    <div class="space-y-4 sm:space-y-5">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <span id="cognitive-level-tag" class="text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                                Kategori: Kesehatan Jasmani
+                            </span>
+                            <span class="text-[11px] text-amber-400 font-medium">Bentuk: Soal Uraian / Essay</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-base sm:text-lg font-bold text-white leading-relaxed">
+                            Memuat pertanyaan...
+                        </h3>
+
+                        <!-- Essay Textarea Box -->
+                        <div class="space-y-2 pt-1">
+                            <div class="flex items-center justify-between">
+                                <label for="user-essay-input" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                    Lembar Jawab Uraian Anda:
+                                </label>
+                                <span class="text-[11px] text-slate-400 font-mono">
+                                    <span id="word-count" class="text-neon-cyan font-bold">0</span> kata | <span id="char-count" class="text-slate-300">0</span> karakter
+                                </span>
+                            </div>
+
+                            <div class="relative">
+                                <textarea 
+                                    id="user-essay-input" 
+                                    rows="6" 
+                                    placeholder="Tuliskan uraian penjelasan lengkap Anda di sini..." 
+                                    oninput="handleEssayInput(this.value)"
+                                    class="w-full p-4 rounded-2xl bg-slate-900/90 border-2 border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-all font-medium text-xs sm:text-sm leading-relaxed resize-y"
+                                ></textarea>
+                                <button type="button" onclick="clearEssayInput()" id="clear-essay-btn" class="absolute right-3 top-3 text-slate-500 hover:text-slate-300 hidden p-1 text-xs bg-slate-800 rounded-lg">
+                                    Hapus ✕
+                                </button>
+                            </div>
+                            <p class="text-[11px] text-slate-500">
+                                💡 Sertakan istilah teknis, konsep utama, dan analisis yang jelas sesuai materi PJOK.
+                            </p>
+                        </div>
+
+                        <!-- Hint Box (Practice Mode) -->
+                        <div id="hint-container" class="hidden">
+                            <button type="button" onclick="toggleHint()" class="inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-medium transition-colors">
+                                💡 <span>Tampilkan Petunjuk Kata Kunci Soal</span>
+                            </button>
+                            <div id="hint-text-box" class="hidden mt-2 p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-200 text-xs sm:text-sm">
+                                <strong>Petunjuk Kata Kunci:</strong> <span id="hint-content"></span>
+                            </div>
+                        </div>
+
+                        <!-- Instant Concept Match Evaluator (Practice Mode) -->
+                        <div id="instant-eval-card" class="hidden p-4 rounded-2xl border transition-all space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-xs sm:text-sm text-white" id="instant-eval-title">Uji Kelengkapan Konsep</span>
+                                <span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full" id="instant-eval-badge">0%</span>
+                            </div>
+                            <p class="text-xs text-slate-300" id="instant-eval-msg"></p>
+                            <div class="pt-2 border-t border-slate-800 text-xs">
+                                <span class="text-slate-400 font-bold block mb-1">Konsep Terdeteksi:</span>
+                                <div id="instant-eval-keywords" class="flex flex-wrap gap-1.5"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Action Controls -->
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-2 sm:gap-3 flex-wrap">
+                        <button id="prev-btn" onclick="prevQuestion()" class="btn-touch px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs sm:text-sm transition-all flex items-center gap-1.5">
+                            <span>◄</span>
+                            <span>Sebelumnya</span>
+                        </button>
+
+                        <div class="flex items-center gap-2 ml-auto">
+                            <button id="check-btn" onclick="evaluateCurrentEssay()" class="hidden btn-touch px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs sm:text-sm transition-all shadow-glow-cyan">
+                                Uji Konsep
+                            </button>
+
+                            <button id="next-btn" onclick="nextQuestion()" class="btn-touch px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-neon-cyan hover:opacity-95 text-white font-bold text-xs sm:text-sm transition-all flex items-center gap-1.5 shadow-glow-indigo">
+                                <span>Selanjutnya</span>
+                                <span>►</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Desktop Sidebar Question Palette (Column 4) -->
+                <div class="hidden lg:block lg:col-span-4 glass-panel p-5 rounded-3xl border border-slate-800 space-y-4 sticky top-20">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Peta Soal Uraian (1-15)</h4>
+                        <span id="answered-count-badge-desktop" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            0/15 Terisi
+                        </span>
+                    </div>
+
+                    <!-- 15 Question Matrix Grid -->
+                    <div id="question-nav-grid-desktop" class="grid grid-cols-5 gap-2"></div>
+
+                    <!-- Legend -->
+                    <div class="pt-2 border-t border-slate-800/80 space-y-1.5 text-[11px] text-slate-400">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded bg-cyan-600 border border-cyan-400"></span>
+                            <span>Soal Aktif</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded bg-emerald-500/20 border border-emerald-500 text-emerald-400 flex items-center justify-center text-[8px]">✓</span>
+                            <span>Sudah Diisi</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded bg-slate-900 border border-slate-700"></span>
+                            <span>Belum Diisi</span>
+                        </div>
+                    </div>
+
+                    <button onclick="confirmFinishEarly()" class="w-full btn-touch py-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold transition-all mt-2">
+                        Selesaikan & Kirim Uraian 🏁
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Mobile Drawer Modal -->
+        <div id="mobile-nav-drawer" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex flex-col justify-end lg:hidden">
+            <div class="glass-panel border-t border-slate-800 rounded-t-3xl p-5 space-y-4 max-h-[80vh] overflow-y-auto">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div>
+                        <h3 class="font-bold text-white text-sm">Peta Soal Uraian (1-15)</h3>
+                        <p class="text-[11px] text-slate-400">Pilih nomor untuk melompat ke soal</p>
+                    </div>
+                    <button onclick="toggleMobileNavDrawer()" class="p-2 text-slate-400 hover:text-white text-lg">✕</button>
+                </div>
+
+                <div id="question-nav-grid-mobile" class="grid grid-cols-5 gap-2.5"></div>
+
+                <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-3">
+                    <span id="answered-count-badge-mobile" class="text-xs font-bold text-emerald-400">0/15 Terisi</span>
+                    <button onclick="toggleMobileNavDrawer()" class="btn-touch px-4 py-2 rounded-xl bg-brand-600 text-white font-bold text-xs">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SCREEN 3: RESULTS & EXPLANATIONS ================= -->
+        <section id="results-screen" class="hidden space-y-6 sm:space-y-8 max-w-4xl mx-auto w-full py-4">
+            
+            <!-- Result Overview Card -->
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl text-center space-y-6 border border-slate-800 relative overflow-hidden">
+                <div class="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                    Hasil Evaluasi Uraian PJOK Kelas XII
+                </div>
+
+                <!-- Radial Score Dial -->
+                <div class="flex flex-col items-center justify-center space-y-3">
+                    <div class="relative w-32 h-32 sm:w-40 sm:h-40 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                            <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path id="score-circle-path" class="text-neon-cyan transition-all duration-1000 ease-out" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="absolute flex flex-col items-center justify-center">
+                            <span id="result-score-num" class="text-3xl sm:text-5xl font-extrabold text-white">0</span>
+                            <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-semibold">Skor Akhir</span>
+                        </div>
+                    </div>
+
+                    <div id="grade-badge" class="px-4 py-1.5 rounded-xl font-bold text-xs sm:text-sm">
+                        Predikat: -
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <h3 id="result-headline" class="text-xl sm:text-2xl font-extrabold text-white">Hasil Evaluasi Kelengkapan Konsep</h3>
+                    <p id="result-subtext" class="text-xs sm:text-sm text-slate-400">Rincian tingkat ketuntasan uraian kamu.</p>
+                </div>
+
+                <!-- Metrics 4-Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-4 border-t border-slate-800/80">
+                    <div class="p-3 bg-slate-900/80 rounded-2xl border border-slate-800">
+                        <p class="text-[11px] text-slate-400">Total Kata Ditepaki</p>
+                        <p id="stat-words" class="text-base sm:text-lg font-bold text-emerald-400">0 Kata</p>
+                    </div>
+                    <div class="p-3 bg-slate-900/80 rounded-2xl border border-slate-800">
+                        <p class="text-[11px] text-slate-400">Konsep Terpenuhi</p>
+                        <p id="stat-concepts" class="text-base sm:text-lg font-bold text-neon-cyan">0 / 0</p>
+                    </div>
+                    <div class="p-3 bg-slate-900/80 rounded-2xl border border-slate-800">
+                        <p class="text-[11px] text-slate-400">Akurasi Konsep</p>
+                        <p id="stat-accuracy" class="text-base sm:text-lg font-bold text-purple-400">0%</p>
+                    </div>
+                    <div class="p-3 bg-slate-900/80 rounded-2xl border border-slate-800">
+                        <p class="text-[11px] text-slate-400">Waktu Pengerjaan</p>
+                        <p id="stat-time" class="text-base sm:text-lg font-bold text-amber-400">00:00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Essay Reviews & Ideal Answers -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <h4 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                        <span>Pembahasan Lengkap & Kunci Jawaban Ideal (15 Soal)</span>
+                    </h4>
+
+                    <!-- Filter Tabs -->
+                    <div class="inline-flex p-1 bg-slate-900 rounded-xl border border-slate-800 text-xs w-full sm:w-auto justify-center">
+                        <button onclick="filterReview('all')" id="filter-all" class="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg font-semibold bg-cyan-600 text-white">
+                            Semua (15)
+                        </button>
+                        <button onclick="filterReview('high')" id="filter-high" class="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white">
+                            Sangat Lengkap (≥80%)
+                        </button>
+                        <button onclick="filterReview('low')" id="filter-low" class="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white">
+                            Perlu Dilengkapi (<80%)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Review Items Container -->
+                <div id="review-cards-list" class="space-y-4"></div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <button onclick="restartQuiz()" class="btn-touch flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-neon-cyan to-brand-600 hover:opacity-95 text-white font-bold text-xs sm:text-sm transition-all shadow-glow-cyan flex items-center justify-center gap-2">
+                    <span>🔄 Ulangi Latihan PJOK</span>
+                </button>
+                <button onclick="goToHome()" class="btn-touch flex-1 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2">
+                    <span>🏠 Kembali ke Halaman Utama</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal: Info Kisi-Kisi -->
+    <div id="info-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="glass-panel max-w-lg w-full p-5 sm:p-6 rounded-3xl border border-slate-800 space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-white text-sm sm:text-base flex items-center gap-2">
+                    <span>Informasi Kisi-Kisi Uraian PJOK XII</span>
+                </h3>
+                <button onclick="toggleInfoModal()" class="text-slate-400 hover:text-white p-1">✕</button>
+            </div>
+            <div class="space-y-2.5 text-xs text-slate-300 leading-relaxed">
+                <p><strong>Mata Pelajaran:</strong> Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</p>
+                <p><strong>Kelas / Jenjang:</strong> XII (Dua Belas) SMA/MA/SMK</p>
+                <p><strong>Bentuk Soal:</strong> 15 Soal Uraian / Essay Interaktif</p>
+                <div class="p-3 bg-slate-900 rounded-2xl border border-slate-800 space-y-1.5 text-slate-400 text-[11px] sm:text-xs">
+                    <span class="font-bold text-white">Cakupan Pokok Bahasan:</span>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li><strong>Gaya Hidup Sehat:</strong> Faktor pendorong, pengertian, serta manfaat fisik & mental.</li>
+                        <li><strong>Sedentary Lifestyle:</strong> Bahaya gaya hidup kurang gerak & penyakit degeneratif.</li>
+                        <li><strong>Bola Basket:</strong> Posisi (PG, SG, SF, PF, C), Mekanisme Lay Up, Zone vs Man Defense.</li>
+                        <li><strong>Sepak Bola:</strong> Pengertian, Regulasi IFAB, Aturan Offside & Handball.</li>
+                        <li><strong>Bola Voli:</strong> Posisi (Setter, Spiker, Libero, Blocker), Sistem Defense (Block/Digging), & Taktik Penyerangan.</li>
+                    </ul>
+                </div>
+            </div>
+            <button onclick="toggleInfoModal()" class="w-full btn-touch py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Modal: Confirmation Finish -->
+    <div id="confirm-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="glass-panel max-w-md w-full p-6 rounded-3xl border border-slate-800 space-y-5 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center mx-auto text-2xl">
+                ⚠️
+            </div>
+            <div class="space-y-1">
+                <h3 class="font-bold text-white text-base sm:text-lg">Kirim Uraian Jawaban Sekarang?</h3>
+                <p id="confirm-modal-msg" class="text-xs text-slate-400">
+                    Kamu telah mengisi <span id="confirm-filled-num" class="text-white font-bold">0</span> dari 15 soal uraian PJOK.
+                </p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="closeConfirmModal()" class="btn-touch flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs">
+                    Lanjutkan Ketik
+                </button>
+                <button onclick="finishQuiz()" class="btn-touch flex-1 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg">
+                    Selesaikan & Evaluasi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* Web Audio API Sound Synthesizer */
+        let audioCtx = null;
+        let isMuted = false;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    audioCtx = new AudioContext();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playSound(type) {
+            if (isMuted) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                const now = ctx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(580, now);
+                    osc.frequency.exponentialRampToValueAtTime(300, now + 0.05);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'good') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    gain.gain.setValueAtTime(0.18, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.22);
+                    osc.start(now);
+                    osc.stop(now + 0.22);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.setValueAtTime(170, now + 0.08);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
+                    osc.start(now);
+                    osc.stop(now + 0.18);
+                } else if (type === 'finish') {
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                        const o = ctx.createOscillator();
+                        const g = ctx.createGain();
+                        o.connect(g);
+                        g.connect(ctx.destination);
+                        o.type = 'sine';
+                        o.frequency.setValueAtTime(freq, now + idx * 0.08);
+                        g.gain.setValueAtTime(0.15, now + idx * 0.08);
+                        g.gain.linearRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
+                        o.start(now + idx * 0.08);
+                        o.stop(now + idx * 0.08 + 0.2);
+                    });
+                }
+            } catch (e) {
+                console.warn("Audio error:", e);
+            }
+        }
+
+        function toggleSound() {
+            isMuted = !isMuted;
+            document.getElementById('sound-icon').textContent = isMuted ? '🔇' : '🔊';
+            document.getElementById('sound-toggle-btn').classList.toggle('opacity-50', isMuted);
+        }
+
+        // 15 PJOK Essay Questions Database based on Kisi-Kisi PJOK
+        const QUESTION_BANK = [
+            {
+                id: 1,
+                topic: "Gaya Hidup Sehat",
+                level: "Materi: Kesehatan Jasmani",
+                question: "Jelaskan pengertian gaya hidup sehat, sebutkan faktor-faktor utama yang memengaruhinya, serta uraikan minimal 3 manfaat nyata penerapan pola hidup sehat bagi kebugaran tubuh!",
+                keyConcepts: [
+                    { name: "Pengertian / Pola Kebiasaan", patterns: ["pola hidup", "kebiasaan", "gaya hidup", "pola makan"] },
+                    { name: "Faktor Utama (Gizi/Olahraga/Istirahat)", patterns: ["makanan", "gizi", "nutrisi", "olahraga", "aktivitas fisik", "istirahat", "tidur"] },
+                    { name: "Manfaat Kebugaran & Imunitas", patterns: ["kebugaran", "imunitas", "daya tahan tubuh", "sehat", "penyakit"] }
+                ],
+                hint: "Sebutkan pengertian pola kebiasaan sehat, faktor utama (gizi seimbang, olahraga, istirahat), serta manfaat bagi kebugaran jasmani.",
+                idealAnswer: "Gaya hidup sehat adalah kebiasaan hidup yang memperhatikan seluruh aspek kondisi kesehatan, mulai dari pola makan/nutrisi, aktivitas fisik, hingga pola istirahat. Faktor-faktor utamanya meliputi: 1) Asupan gizi seimbang; 2) Olahraga teratur; 3) Istirahat/tidur cukup; serta 4) Manajemen stres. Manfaatnya antara lain meningkatkan kebugaran jasmani, memperkuat sistem imunitas tubuh dari serangan penyakit, serta menjaga kestabilan kesehatan mental dan stamina harian.",
+                explanation: "Gaya hidup sehat merupakan investasi jangka panjang untuk mencegah penyakit degeneratif dan meningkatkan harapan hidup."
+            },
+            {
+                id: 2,
+                topic: "Sedentary Lifestyle",
+                level: "Materi: Kesehatan Jasmani",
+                question: "Apa yang dimaksud dengan perilaku sedentary (kebalikan dari gaya hidup sehat)? Sebutkan contoh perilaku sedenter dalam kehidupan sehari-hari dan dampak buruknya bagi kesehatan tubuh!",
+                keyConcepts: [
+                    { name: "Pengertian (Minim Aktivitas / Kurang Gerak)", patterns: ["kurang gerak", "minim aktivitas", "duduk lama", "pasif"] },
+                    { name: "Contoh Perilaku (Main HP / Nonton / Duduk)", patterns: ["main hp", "gadget", "nonton tv", "rebahan", "duduk lama"] },
+                    { name: "Dampak Kesehatan (Obesitas / Diabetes / Jantung)", patterns: ["obesitas", "gemuk", "diabetes", "jantung", "metabolisme", "degeneratif"] }
+                ],
+                hint: "Sebutkan pengertian gaya hidup kurang gerak, contoh kegiatan rebahan/duduk lama, dan bahayanya seperti obesitas & penyakit jantung.",
+                idealAnswer: "Perilaku sedentary (gaya hidup sedenter) adalah pola perilaku yang ditandai dengan sangat rendahnya aktivitas fisik dan pembakaran energi harian (kebalikan gaya hidup aktif/sehat). Contoh perilakunya meliputi duduk berjam-jam di depan komputer/TV, terlalu lama bermain gadget sambil rebahan, dan jarang berjalan kaki. Dampak buruknya meliputi penurunan metabolisme tubuh, risiko obesitas (kegemukan), diabetes melitus tipe 2, serta serangan penyakit kardiovaskular (jantung dan hipertensi).",
+                explanation: "Gaya hidup sedenter memicu penumpukan lemak berlebih dan melemahkan kapasitas kerja jantung serta pembuluh darah."
+            },
+            {
+                id: 3,
+                topic: "Bola Basket - Posisi Pemain",
+                level: "Materi: Permainan Bola Besar",
+                question: "Sebutkan dan jelaskan peran serta tugas utama dari 5 posisi pemain dalam permainan bola basket (Point Guard, Shooting Guard, Small Forward, Power Forward, dan Center)!",
+                keyConcepts: [
+                    { name: "Point Guard (PG) - Pengatur Serangan", patterns: ["point guard", "pg", "pengatur", "playmaker", "dribble", "operan"] },
+                    { name: "Shooting Guard & Small Forward (SG/SF) - Penembak/Pencetak Skor", patterns: ["shooting guard", "sg", "small forward", "sf", "penembak", "3 point", "skor"] },
+                    { name: "Power Forward & Center (PF/C) - Rebounder & Pertahanan Bawah Ring", patterns: ["power forward", "pf", "center", "c", "rebound", "bawah ring", "post"] }
+                ],
+                hint: "Sebutkan 5 posisi (PG, SG, SF, PF, C) beserta peran utamanya seperti pengatur serangan, penembak luar, dan rebounder bawah ring.",
+                idealAnswer: "Lima posisi utama dalam bola basket:\n1) Point Guard (PG): Pengatur alur serangan (playmaker) dan pembagi bola utama.\n2) Shooting Guard (SG): Spesialis tembakan jarak jauh (3-point) dan penetrasi.\n3) Small Forward (SF): Pencetak poin serba bisa dari area luar maupun dalam drive.\n4) Power Forward (PF): Bekerja di area dekat ring untuk mencetak poin rebound dan bertahan.\n5) Center (C): Pemain tertinggi yang bertugas mengamankan rebound, blocking bola lawan, dan menjaga area bawah ring (paint area).",
+                explanation: "Setiap posisi basket memiliki spesialisasi fisik dan keterampilan teknis yang saling melengkapi dalam taktik tim."
+            },
+            {
+                id: 4,
+                topic: "Bola Basket - Teknik Lay Up",
+                level: "Materi: Permainan Bola Besar",
+                question: "Uraikan rangkaian langkah gerak teknis melakukan tembakan Lay Up Shoot pada permainan bola basket mulai dari awalan dribble, ritme langkah kaki, hingga pelepasan bola ke papan pantul!",
+                keyConcepts: [
+                    { name: "Dribble Awalan & Mengangkat Bola", patterns: ["dribble", "memegang bola", "awalan"] },
+                    { name: "Ritme 2 Langkah Kaki", patterns: ["dua langkah", "2 langkah", "kaki kanan", "kaki kiri", "melangkah"] },
+                    { name: "Lompatan & Release Papan Pantul", patterns: ["lompat", "meloncat", "pantulkan", "papan", "ring", "release"] }
+                ],
+                hint: "Uraikan awalan dribble dekat ring, ritme 2 langkah kaki tanpa dribble, lompatan ke atas, dan dorongan bola ke papan pantul.",
+                idealAnswer: "Rangkaian gerak teknik Lay Up Shoot:\n1) Awalan: Mendribble bola mendekati area ring lawan dari sudut kanan/kiri.\n2) Langkah Kaki (Dua Langkah): Saat bola dipegang dengan kedua tangan, lakukan ritme dua langkah kaki tanpa memantulkan bola (contoh kanan-kiri jika lay up tangan kanan).\n3) Tolakan & Pelepasan: Pada langkah kedua, lakukan tolakan kuat ke atas dengan satu kaki, angkat lutut kaki lainnya, lalu lepaskan bola dengan jari tangan secara lembut memantul ke papan pantul (backboard) menuju ring.",
+                explanation: "Lay up adalah tembakan melayang dekat ring dengan persentase keberhasilan tinggi memanfaatkan papan pantul."
+            },
+            {
+                id: 5,
+                topic: "Bola Basket - Sistem Pertahanan",
+                level: "Materi: Permainan Bola Besar",
+                question: "Bandingkan sistem pertahanan Zone Defense (pertahanan wilayah) dan Man-to-Man Marking (penjagaan perorangan) dalam permainan bola basket! Sebutkan kelebihan masing-masing pertahanan!",
+                keyConcepts: [
+                    { name: "Zone Defense (Menjaga Area/Wilayah)", patterns: ["zone defense", "wilayah", "area", "menjaga zona", "zona"] },
+                    { name: "Man-to-Man Marking (Menjaga Perorangan)", patterns: ["man to man", "perorangan", "satu lawan satu", "individu", "menempel"] },
+                    { name: "Kelebihan / Kekurangan Masing-masing", patterns: ["kelebihan", "stamina", "rebound", "3 point", "efektif"] }
+                ],
+                hint: "Jelaskan zone defense sebagai penjagaan area dan man-to-man sebagai penjagaan 1 lawan 1 beserta kelebihannya.",
+                idealAnswer: "1) Zone Defense: Sistem di mana setiap pemain bertanggung jawab menjaga area/wilayah tertentu di lapangan. Kelebihannya: Sangat efektif mengamankan area bawah ring dari penetrasi/drive lawan, hemat stamina, dan memudahkan rebound.\n2) Man-to-Man Marking: Sistem di mana setiap pemain menjaga ketat satu pemain lawan secara individu ke mana pun bergerak. Kelebihannya: Sangat efektif mematikan penembak jitu (shooter) lawan dan menekan opsi umpan tim lawan secara presisi.",
+                explanation: "Pemilihan jenis defense disesuaikan dengan keunggulan postur dan tipe permainan tim lawan."
+            },
+            {
+                id: 6,
+                topic: "Sepak Bola - Pengertian & Peraturan Dasar",
+                level: "Materi: Permainan Bola Besar",
+                question: "Jelaskan pengertian dasar permainan sepak bola serta sebutkan aturan-aturan fundamentales resmi (jumlah pemain, waktu pertandingan, dan aturan pemenang) sesuai regulasi IFAB!",
+                keyConcepts: [
+                    { name: "Pengertian (Dua Tim Memasukkan Bola)", patterns: ["11 pemain", "dua tim", "memasukkan bola", "gawang", "kaki"] },
+                    { name: "Durasi Waktu (2 x 45 Menit)", patterns: ["2 x 45", "90 menit", "babak", "istirahat 15"] },
+                    { name: "Aturan Pemenang (Gol Terbanyak)", patterns: ["gol terbanyak", "menang", "skor", "pemenang"] }
+                ],
+                hint: "Sebutkan permainan 11 vs 11 menggunakan kaki, waktu 2 x 45 menit, dan tim yang mencetak gol terbanyak keluar sebagai pemenang.",
+                idealAnswer: "Sepak bola adalah permainan berberegu yang dimainkan oleh dua tim beranggotakan masing-masing 11 pemain di lapangan, dengan tujuan memasukkan bola ke gawang lawan menggunakan kaki atau seluruh bagian tubuh kecuali tangan (khusus kiper di dalam kotak penalti).\nAturan Dasar IFAB:\n1) Jumlah pemain: 11 orang per tim (satu di antaranya kiper).\n2) Durasi: 2 x 45 menit (total 90 menit) dipisah jeda istirahat 15 menit.\n3) Pemenang: Tim yang berhasil mencetak akumulasi gol terbanyak ke gawang lawan dalam waktu normal.",
+                explanation: "IFAB (International Football Association Board) adalah badan internasional penerbit aturan resmi permainan sepak bola."
+            },
+            {
+                id: 7,
+                topic: "Sepak Bola - Aturan Offside & Handball",
+                level: "Materi: Permainan Bola Besar",
+                question: "Uraikan konsep aturan Offside dalam sepak bola (kapan seorang pemain dinyatakan offside) serta jelaskan kriteria terjadinya pelanggaran Handball sesuai aturan IFAB terbaru!",
+                keyConcepts: [
+                    { name: "Offside (Lebih Dekat ke Garis Gawang Lawan)", patterns: ["offside", "lebih dekat gawang", "pemain bertahan terakhir", "umpan bola"] },
+                    { name: "Aktif dalam Permainan Offside", patterns: ["menerima bola", "mengganggu", "terlibat", "aktif"] },
+                    { name: "Handball (Sentuhan Lengan/Tangan)", patterns: ["handball", "tangan", "lengan", "posisi tidak alami", "sengaja"] }
+                ],
+                hint: "Offside: posisi penyerang lebih dekat ke gawang lawan melebihi bek terakhir saat bola dioper. Handball: bola menyentuh tangan/lengan secara tidak alami.",
+                idealAnswer: "1) Offside: Terjadi apabila seorang pemain penyerang berada pada posisi lebih dekat ke garis gawang lawan dibandingkan bola dan pemain bertahan terakhir lawan pada saat bola dioperkan kepadanya, serta pemain tersebut aktif terlibat dalam permainan (menerima bola atau mengganggu kiper/bek).\n2) Handball: Terjadi apabila bola menyentuh tangan atau lengan pemain (dari batas bawah ketiak ke bawah) secara sengaja, atau posisi tangan membuat tubuh pemain menjadi lebih besar secara tidak alami (unnatural position) yang menguntungkan jalannya pertandingan.",
+                explanation: "Offside mencegah pencurian posisi di dekat gawang lawan, sedangkan handball menjamin prinsip penggunaan kaki pada sepak bola."
+            },
+            {
+                id: 8,
+                topic: "Bola Voli - Posisi Setter, Spiker, Libero",
+                level: "Materi: Permainan Bola Besar",
+                question: "Jelaskan posisi dan tugas-tugas vital dari tiga pemain bola voli berikut: Setter / Tosser, Outside / Opposite Hitter (Spiker), dan Libero!",
+                keyConcepts: [
+                    { name: "Setter / Tosser (Pengatur Serangan / Umpan)", patterns: ["setter", "tosser", "umpan", "pengatur serangan", "passing atas"] },
+                    { name: "Spiker / Hitter (Mencetak Poin / Smash)", patterns: ["spiker", "smash", "hitter", "pencetak poin", "pukulan keras"] },
+                    { name: "Libero (Spesialis Pertahanan / Seragam Beda)", patterns: ["libero", "bertahan", "passing bawah", "jersey beda", "seragam beda", "tidak boleh smash"] }
+                ],
+                hint: "Setter bertugas mengumpan bola, Spiker melakukan smash tajam, dan Libero spesialis bertahannya dengan warna seragam berbeda.",
+                idealAnswer: "1) Setter / Tosser: Otak pengatur serangan tim yang bertugas memberikan umpan manis (set-up) menggunakan passing atas kepada spiker untuk melakukan serangan.\n2) Spiker / Hitter: Eksekutor utama penyerangan yang bertugas melakukan pukulan keras menukik (smash/spike) melompati net untuk menghasilkan poin.\n3) Libero: Spesialis pertahanan garis belakang yang mengenakan seragam warna berbeda. Tugasnya menerima servis dan mengamankan bola smash lawan (digging). Libero tidak boleh melakukan smash, servis, atau blocking.",
+                explanation: "Kombinasi chemistry antara Setter dan Spiker menentukan variasi dan efektivitas gempuran serangan bola voli."
+            },
+            {
+                id: 9,
+                topic: "Bola Voli - Posisi Blocker & Server",
+                level: "Materi: Permainan Bola Besar",
+                question: "Uraikan fungsi dan peran pemain Blocker (Middle Blocker) saat membendung serangan lawan serta jelaskan pentingnya peran Server dalam memulainya alur rally pertandingan bola voli!",
+                keyConcepts: [
+                    { name: "Middle Blocker (Bendungan Pertahanan Depan)", patterns: ["middle blocker", "blocker", "pembendung", "membendung smash", "depan net"] },
+                    { name: "Fungsi Block (Menahan / Mematikan Bola)", patterns: ["menahan bola", "mematikan", "pantulan", "dinding"] },
+                    { name: "Server (Memulai Pertandingan & Serangan Pertama)", patterns: ["server", "servis", "memulai permainan", "serangan pertama", "menekan"] }
+                ],
+                hint: "Blocker menahan smash lawan di depan net, sedangkan Server memulai rally dan dapat dijadikan serangan pertama jika servis menukik.",
+                idealAnswer: "1) Middle Blocker: Pemain di posisi depan net yang bertugas membendung (blocking) pukulan smash lawan agar bola berbalik mati di lapangan lawan atau melambung pelan untuk diselamatkan rekan setim.\n2) Server: Pemain yang bertugas melakukan tembakan servis dari luar garis belakang untuk memulai rally pertandingan. Servis yang tajam dan akurat berfungsi sebagai serangan pertama yang dapat merusak pola penerimaan bola (receive) tim lawan.",
+                explanation: "Servis yang agresif sering kali menjadi kunci awal untuk merusak kombinasi serangan cepat lawan."
+            },
+            {
+                id: 10,
+                topic: "Bola Voli - Sistem Pertahanan Block",
+                level: "Materi: Permainan Bola Besar",
+                question: "Jelaskan variasi sistem pertahanan bendungan (blocking) dalam bola voli: Block 1 orang, Block 2 orang, dan Block 3 orang! Dalam situasi apa masing-masing variasi tersebut digunakan?",
+                keyConcepts: [
+                    { name: "Block 1 Orang (Smash Cepat / Keterbatasan Rotasi)", patterns: ["block 1 orang", "tunggal", "smash cepat", "quick smash", "terlambat"] },
+                    { name: "Block 2 Orang (Kondisi Standar / Open Spike)", patterns: ["block 2 orang", "ganda", "standar", "open spike", "paling sering"] },
+                    { name: "Block 3 Orang (Smash Keras / Poin Kritis)", patterns: ["block 3 orang", "triple", "smash keras", "penyerang utama", "rapat"] }
+                ],
+                hint: "Block 1 orang untuk antisipasi quick smash cepat, Block 2 orang untuk serangan open umum, Block 3 orang untuk mematikan spiker terkuat lawan.",
+                idealAnswer: "1) Block 1 Orang (Tunggal): Digunakan saat menghadapi umpan bola cepat (quick smash) lawan di mana blocker lain tidak sempat membantu bergabung.\n2) Block 2 Orang (Ganda): Sistem pertahanan paling umum dan standar digunakan menghadapi open spike dari posisi sayap luar (outside/opposite hitter).\n3) Block 3 Orang (Triple Block): Digunakan pada situasi kritis untuk mematikan spiker terkuat lawan atau saat umpan bola lawan sangat tinggi dan melambung di dekat net sehingga 3 pemain depan sempat merapatkan tangan.",
+                explanation: "Rapatnya jari jemari dan kerapatan jarak lengan antar-blocker menentukan kerapatan dinding pertahanan net."
+            },
+            {
+                id: 11,
+                topic: "Bola Voli - Pertahanan Lapangan Bawah (Cover)",
+                level: "Materi: Permainan Bola Besar",
+                question: "Apa yang dimaksud dengan sistem pertahanan Cover Attack (penyelamatan bola mentah) dan Digging pada permainan bola voli? Mengapa sistem ini wajib berjalan selaras dengan blocker?",
+                keyConcepts: [
+                    { name: "Cover Attack (Mengamankan Pantulan Block)", patterns: ["cover attack", "pantulan block", "penyelamatan bola", "bola mentah"] },
+                    { name: "Digging / Passing Bawah Pertahanan", patterns: ["digging", "dig", "passing bawah", "smash tembus"] },
+                    { name: "Sinergi Blocker & Defense Belakang", patterns: ["sinergi", "menutup area kosong", "belakang block", "kerjasama"] },
+                ],
+                hint: "Cover Attack menyelamatkan bola hasil pantulan block sendiri, Digging menahan smash tembus, dan keduanya menutup area kosong di belakang block.",
+                idealAnswer: "1) Cover Attack: Sistem pertahanan di mana pemain belakang bersiap mendampingi spiker di dekat net untuk menyelamatkan bola serangan tim sendiri yang terpantul kembali akibat diblok oleh lawan.\n2) Digging: Teknik penyelamatan bola smash keras lawan yang berhasil menembus pertahanan block depan menggunakan passing bawah.\nKeduanya wajib selaras dengan blocker karena blocker bertugas menutup sudut tembak utama, sementara pemain digging/cover bertugas mengisi dan menjaga area kosong di balik bayang-bayang blokade tersebut.",
+                explanation: "Tanpa cover dan digging yang responsif, bola muntah hasil blokade akan mudah jatuh menjadi poin bagi lawan."
+            },
+            {
+                id: 12,
+                topic: "Bola Voli - Taktik & Strategi Penyerangan",
+                level: "Materi: Permainan Bola Besar",
+                question: "Jelaskan perbedaan antara variasi serangan Open Smash dan Quick Smash dalam bola voli! Sebutkan bagaimana formasi Setter (seperti formasi 5S-1T) memengaruhi variasi serangan!",
+                keyConcepts: [
+                    { name: "Open Smash (Umpan Tinggi Melambung)", patterns: ["open smash", "umpan tinggi", "lambung", "sayap", "pinggir"] },
+                    { name: "Quick Smash (Umpan Cepat Pendek)", patterns: ["quick smash", "cepat", "pendek", "dekat setter", "potong"] },
+                    { name: "Formasi Setter (5S-1T / Strategi Serangan)", patterns: ["formasi", "5s-1t", "setter tunggal", "variasi", "pola serangan"] }
+                ],
+                hint: "Open smash mengandalkan umpan melambung tinggi di pinggir net, quick smash mengandalkan bola pendek cepat dekat setter, dan formasi 5S-1T memakai 1 setter utama.",
+                idealAnswer: "1) Open Smash: Serangan dengan umpan bola melambung tinggi di pinggir net (posisi 2 atau 4) yang memberi waktu bagi spiker mengambil awalan lompatan maksimal.\n2) Quick Smash: Serangan bola cepat berjarak pendek di atas net dekat setter, di mana spiker melompat bersamaan atau sebelum bola dilepaskan setter untuk mengecoh blocker lawan.\n3) Formasi 5 Set-up / 1 Tosser (5S-1T): Menggunakan 1 Setter utama dan 5 Spiker. Formasi ini memaksimalkan kestabilan pengatur serangan sehingga variasi gabungan open spike, quick ball, dan pipe attack dari garis belakang dapat berjalan konsisten.",
+                explanation: "Kecepatan eksekusi quick smash bertujuan mendahului naiknya lompatan tangan blocker tengah lawan."
+            },
+            {
+                id: 13,
+                topic: "Gaya Hidup Sehat vs Sedentary",
+                level: "Materi: Kesehatan Jasmani",
+                question: "Lakukan analisis perbandingan dampak jangka panjang antara individu yang menerapkan Gaya Hidup Sehat secara konsisten dengan individu yang terjebak Sedentary Lifestyle terhadap kualitas hidup dan kesehatan mental!",
+                keyConcepts: [
+                    { name: "Dampak Gaya Hidup Sehat (Stamina, Mental, Panjang Umur)", patterns: ["stamina", "panjang umur", "sehat mental", "energi", "kualitas hidup baik"] },
+                    { name: "Dampak Sedentary (Penyakit Kronis, Stres/Depresi)", patterns: ["stres", "depresi", "kronis", "mudah lelah", "penyakit"] },
+                    { name: "Perbandingan Produktivitas", patterns: ["produktivitas", "kualitas hidup", "perbandingan", "investasi"] }
+                ],
+                hint: "Bandingkan gaya hidup sehat (stamina tinggi, mental stabil, terhindar penyakit) vs sedenter (mudah lelah, risiko obesitas/stres, kualitas hidup menurun).",
+                idealAnswer: "Analisis Perbandingan:\n1) Individu Gaya Hidup Sehat: Dalam jangka panjang memiliki kualitas hidup yang tinggi, tingkat stamina jasmani stabil, imunitas kuat terhindar dari penyakit degeneratif, serta kesehatan mental yang lebih baik karena aktivitas olahraga merangsang hormon endorfin pengurang stres.\n2) Individu Sedentary Lifestyle: Berisiko tinggi mengalami penurunan produktivitas, tubuh mudah lelah, rentan obesitas, hipertensi, serangan jantung, serta secara psikologis lebih rentan mengalami gangguan kecemasan dan stres akibat minimnya aktivitas fisik.",
+                explanation: "Aktivitas fisik teratur berperan vital sebagai regulator metabolisme biologis dan penyeimbang kejiwaan manusia."
+            },
+            {
+                id: 14,
+                topic: "Sepak Bola - Aturan Kartu & Pelanggaran",
+                level: "Materi: Permainan Bola Besar",
+                question: "Sebutkan perbedaan antara pelanggaran berbuah Kartu Kuning dan Kartu Merah dalam sepak bola! Apa konsekuensi akumulasi dua kartu kuning bagi seorang pemain dalam satu laga?",
+                keyConcepts: [
+                    { name: "Kartu Kuning (Peringatan / Pelanggaran Sedang)", patterns: ["kartu kuning", "peringatan", "pelanggaran sedang", "tekling tidak bersih"] },
+                    { name: "Kartu Merah (Pengusiran / Pelanggaran Berat/Mencederai)", patterns: ["kartu merah", "pengusiran", "keluar lapangan", "pelanggaran berat", "mencederai", "sengaja"] },
+                    { name: "Akumulasi 2 Kartu Kuning = Kartu Merah", patterns: ["akumulasi", "dua kartu kuning", "2 kartu kuning", "kartu merah tidak langsung"] }
+                ],
+                hint: "Kartu kuning adalah peringatan keras atas pelanggaran taktis/sedang, Kartu merah adalah pengusiran langsung atas pelanggaran berat. 2 Kartu kuning berujung kartu merah.",
+                idealAnswer: "1) Kartu Kuning: Peringatan resmi dari wasit atas pelanggaran sedang, seperti tekel ceroboh dari belakang, mementingkan protes berlebihan, mengulur waktu, atau melanggar aturan secara berulang.\n2) Kartu Merah: Hukuman pengusiran langsung keluar lapangan atas pelanggaran sangat berat, seperti tekel berbahaya yang mengancam keselamatan lawan, perilaku kasar/memukul, atau menggagalkan peluang gol pasti dengan sengaja menggunakan tangan.\n3) Akumulasi: Jika seorang pemain menerima 2 kartu kuning dalam satu pertandingan yang sama, ia akan otomatis menerima Kartu Merah tidak langsung dan harus meninggalkan lapangan tanpa boleh digantikan.",
+                explanation: "Hukuman kartu menjaga ketertiban, sportivitas, serta melindungi keselamatan fisik para pemain di lapangan."
+            },
+            {
+                id: 15,
+                topic: "Analisis Taktik Pertahanan Basket & Voli",
+                level: "Materi: Komparasi Olahraga Bola Besar",
+                question: "Bandingkan prinsip dasar komunikasi dan rotasi pertahanan kolektif antara sistem Zone Defense pada bola basket dengan sistem Block & Cover pada bola voli!",
+                keyConcepts: [
+                    { name: "Komunikasi & Kompabilitas Tim", patterns: ["komunikasi", "kerjasama", "koordinasi", "bicara"] },
+                    { name: "Rotasi Menutup Area Kosong", patterns: ["rotasi", "menutup area", "ruang kosong", "pindah posisi"] },
+                    { name: "Antisipasi Arah Serangan Lawan", patterns: ["antisipasi", "arah bola", "membaca serangan", "posisi"] }
+                ],
+                hint: "Bandingkan pentingnya komunikasi dan kecepatan rotasi mengisi area kosong dalam pertahanan zona basket maupun benteng block-cover voli.",
+                idealAnswer: "Persamaan dan Perbandingan Taktis:\n1) Komunikasi Tim: Dalam Zone Defense basket, pemain harus terus berkomunikasi memberitahukan pergerakan bola lawan. Begitu pula pada voli, komunikasi antar-blocker dan pemain belakang sangat vital untuk menentukan siapa yang melompat dan siapa yang mengisi area digging.\n2) Kecepatan Rotasi: Pada basket, jika satu pemain zona bergeser melapis rekan, pemain lain wajib melakukan rotasi menutup ruang tembak. Pada voli, ketika blocker melompat menutup sudut lurus, pemain cover/digging wajib berotasi menutup sudut silang (cross-court) yang terbuka.\nKesimpulan: Kedua sistem sama-sama mengandalkan ketajaman membaca arah bola dan koordinasi rotasi kolektif daripada kekuatan individu semata.",
+                explanation: "Pertahanan kolektif yang solid selalu dibangun atas dasar komunikasi yang jernih dan kesadaran spasial antar-pemain."
+            }
+        ];
+
+        // State Management
+        let appState = {
+            mode: 'latihan',
+            currentIndex: 0,
+            answers: new Array(15).fill(''),
+            timerSeconds: 0,
+            timerInterval: null,
+            evaluatedResults: [],
+            filter: 'all'
+        };
+
+        function normalizeText(str) {
+            if (!str) return '';
+            return str
+                .toLowerCase()
+                .trim()
+                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, " ")
+                .replace(/\s+/g, " ");
+        }
+
+        function countWords(str) {
+            const clean = str.trim();
+            if (!clean) return 0;
+            return clean.split(/\s+/).length;
+        }
+
+        // Key-Concept Matching Engine
+        function evaluateEssayAnswer(userText, questionObj) {
+            const cleanUser = normalizeText(userText);
+            const totalConcepts = questionObj.keyConcepts.length;
+            
+            if (cleanUser.length < 5) {
+                return {
+                    score: 0,
+                    matchedConceptsCount: 0,
+                    totalConceptsCount: totalConcepts,
+                    conceptStatus: questionObj.keyConcepts.map(c => ({ name: c.name, matched: false }))
+                };
+            }
+
+            let matchedCount = 0;
+            const conceptStatus = questionObj.keyConcepts.map(concept => {
+                const isMatched = concept.patterns.some(pattern => cleanUser.includes(normalizeText(pattern)));
+                if (isMatched) matchedCount++;
+                return {
+                    name: concept.name,
+                    matched: isMatched
+                };
+            });
+
+            let score = Math.round((matchedCount / totalConcepts) * 100);
+            
+            // Penalty if essay is extremely short (< 10 words)
+            if (countWords(userText) < 10 && score > 50) {
+                score = 50;
+            }
+
+            return {
+                score: score,
+                matchedConceptsCount: matchedCount,
+                totalConceptsCount: totalConcepts,
+                conceptStatus: conceptStatus
+            };
+        }
+
+        // Mode Switching
+        function selectMode(m) {
+            playSound('click');
+            appState.mode = m;
+            document.getElementById('radio-latihan').checked = (m === 'latihan');
+            document.getElementById('radio-ujian').checked = (m === 'ujian');
+
+            const cardLatihan = document.getElementById('mode-card-latihan');
+            const cardUjian = document.getElementById('mode-card-ujian');
+
+            if (m === 'latihan') {
+                cardLatihan.className = "p-4 rounded-2xl border-2 border-brand-500 bg-brand-500/10 cursor-pointer transition-all flex items-start gap-3";
+                cardUjian.className = "p-4 rounded-2xl border-2 border-slate-800 bg-slate-900/50 cursor-pointer transition-all flex items-start gap-3 hover:border-slate-700";
+            } else {
+                cardUjian.className = "p-4 rounded-2xl border-2 border-brand-500 bg-brand-500/10 cursor-pointer transition-all flex items-start gap-3";
+                cardLatihan.className = "p-4 rounded-2xl border-2 border-slate-800 bg-slate-900/50 cursor-pointer transition-all flex items-start gap-3 hover:border-slate-700";
+            }
+        }
+
+        function toggleScopeDetails() {
+            playSound('click');
+            const details = document.getElementById('scope-details');
+            const arrow = document.getElementById('scope-arrow');
+            details.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
+        }
+
+        function toggleInfoModal() {
+            playSound('click');
+            document.getElementById('info-modal').classList.toggle('hidden');
+        }
+
+        function toggleMobileNavDrawer() {
+            playSound('click');
+            document.getElementById('mobile-nav-drawer').classList.toggle('hidden');
+        }
+
+        function confirmResetHome() {
+            playSound('click');
+            if (document.getElementById('quiz-screen').classList.contains('hidden')) {
+                goToHome();
+            } else {
+                document.getElementById('confirm-modal-msg').textContent = "Uraian yang telah Anda ketik akan hilang jika Anda kembali ke beranda.";
+                document.getElementById('confirm-modal').classList.remove('hidden');
+            }
+        }
+
+        function confirmFinishEarly() {
+            playSound('click');
+            const filledCount = appState.answers.filter(a => a.trim().length > 0).length;
+            document.getElementById('confirm-filled-num').textContent = filledCount;
+            document.getElementById('confirm-modal-msg').textContent = `Kamu telah mengisi ${filledCount} dari 15 soal uraian. Yakin ingin mengirim sekarang?`;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            playSound('click');
+            document.getElementById('confirm-modal').classList.add('hidden');
+        }
+
+        // Start Quiz Engine
+        function startQuiz() {
+            playSound('click');
+            appState.currentIndex = 0;
+            appState.answers = new Array(15).fill('');
+            appState.timerSeconds = 0;
+
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+
+            renderNavGrid();
+            renderCurrentQuestion();
+
+            // Start Timer
+            clearInterval(appState.timerInterval);
+            appState.timerInterval = setInterval(() => {
+                appState.timerSeconds++;
+                const mins = String(Math.floor(appState.timerSeconds / 60)).padStart(2, '0');
+                const secs = String(appState.timerSeconds % 60).padStart(2, '0');
+                document.getElementById('timer-text').textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderNavGrid() {
+            const filledCount = appState.answers.filter(a => a.trim().length > 0).length;
+
+            const renderToContainer = (containerId) => {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                container.innerHTML = '';
+
+                for (let i = 0; i < 15; i++) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.onclick = () => {
+                        playSound('click');
+                        jumpToQuestion(i);
+                        document.getElementById('mobile-nav-drawer').classList.add('hidden');
+                    };
+
+                    const isCurrent = (i === appState.currentIndex);
+                    const hasAnswer = (appState.answers[i].trim().length > 0);
+
+                    let bgClass = "bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-800";
+                    if (hasAnswer) {
+                        bgClass = "bg-emerald-500/20 border-emerald-500/50 text-emerald-400 font-bold";
+                    }
+                    if (isCurrent) {
+                        bgClass = "bg-cyan-600 border-cyan-400 text-white font-extrabold shadow-glow-cyan";
+                    }
+
+                    btn.className = `btn-touch h-10 rounded-xl border text-xs flex items-center justify-center transition-all ${bgClass}`;
+                    btn.innerHTML = `${i + 1} ${hasAnswer && !isCurrent ? '✓' : ''}`;
+                    container.appendChild(btn);
+                }
+            };
+
+            renderToContainer('question-nav-grid-desktop');
+            renderToContainer('question-nav-grid-mobile');
+
+            document.getElementById('answered-count-badge-desktop').textContent = `${filledCount}/15 Terisi`;
+            document.getElementById('answered-count-badge-mobile').textContent = `${filledCount}/15 Terisi`;
+        }
+
+        function renderCurrentQuestion() {
+            const q = QUESTION_BANK[appState.currentIndex];
+
+            document.getElementById('current-q-num').textContent = appState.currentIndex + 1;
+            document.getElementById('question-topic-badge').textContent = q.topic;
+            document.getElementById('cognitive-level-tag').textContent = q.level;
+            document.getElementById('question-text').textContent = q.question;
+
+            // Essay Input setup
+            const inputEl = document.getElementById('user-essay-input');
+            inputEl.value = appState.answers[appState.currentIndex];
+            handleEssayInput(inputEl.value);
+
+            // Hint Drawer Setup
+            const hintContainer = document.getElementById('hint-container');
+            const hintTextBox = document.getElementById('hint-text-box');
+            hintTextBox.classList.add('hidden');
+
+            if (appState.mode === 'latihan') {
+                hintContainer.classList.remove('hidden');
+                document.getElementById('hint-content').textContent = q.hint;
+                document.getElementById('check-btn').classList.remove('hidden');
+            } else {
+                hintContainer.classList.add('hidden');
+                document.getElementById('check-btn').classList.add('hidden');
+            }
+
+            document.getElementById('instant-eval-card').classList.add('hidden');
+
+            document.getElementById('prev-btn').disabled = (appState.currentIndex === 0);
+            document.getElementById('prev-btn').classList.toggle('opacity-50', appState.currentIndex === 0);
+
+            const nextBtn = document.getElementById('next-btn');
+            if (appState.currentIndex === 14) {
+                nextBtn.innerHTML = `<span>Selesai & Kirim</span> 🏁`;
+            } else {
+                nextBtn.innerHTML = `<span>Selanjutnya</span> <span>►</span>`;
+            }
+
+            renderNavGrid();
+            inputEl.focus();
+        }
+
+        function handleEssayInput(val) {
+            appState.answers[appState.currentIndex] = val;
+            
+            document.getElementById('char-count').textContent = val.length;
+            document.getElementById('word-count').textContent = countWords(val);
+
+            const clearBtn = document.getElementById('clear-essay-btn');
+            if (val.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderNavGrid();
+        }
+
+        function clearEssayInput() {
+            playSound('click');
+            const input = document.getElementById('user-essay-input');
+            input.value = '';
+            handleEssayInput('');
+            input.focus();
+        }
+
+        function toggleHint() {
+            playSound('click');
+            document.getElementById('hint-text-box').classList.toggle('hidden');
+        }
+
+        function evaluateCurrentEssay() {
+            const q = QUESTION_BANK[appState.currentIndex];
+            const userVal = appState.answers[appState.currentIndex];
+            const evalRes = evaluateEssayAnswer(userVal, q);
+
+            playSound(evalRes.score >= 60 ? 'good' : 'wrong');
+
+            const card = document.getElementById('instant-eval-card');
+            const badge = document.getElementById('instant-eval-badge');
+            const msg = document.getElementById('instant-eval-msg');
+            const keywordsBox = document.getElementById('instant-eval-keywords');
+
+            card.classList.remove('hidden', 'bg-emerald-500/10', 'border-emerald-500/30', 'bg-amber-500/10', 'border-amber-500/30', 'bg-rose-500/10', 'border-rose-500/30');
+
+            if (evalRes.score >= 80) {
+                card.classList.add('bg-emerald-500/10', 'border-emerald-500/30');
+                badge.className = "text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                msg.textContent = "Sangat Lengkap! Uraian Anda mencakup sebagian besar konsep utama PJOK.";
+            } else if (evalRes.score >= 50) {
+                card.classList.add('bg-amber-500/10', 'border-amber-500/30');
+                badge.className = "text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30";
+                msg.textContent = "Cukup Baik! Beberapa kata kunci penting sudah ada, tambahkan rincian lagi.";
+            } else {
+                card.classList.add('bg-rose-500/10', 'border-rose-500/30');
+                badge.className = "text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30";
+                msg.textContent = "Masih Kurang Lengkap. Lengkapi penjelasan Anda dengan kata kunci yang disarankan.";
+            }
+
+            badge.textContent = `${evalRes.score}%`;
+
+            keywordsBox.innerHTML = '';
+            evalRes.conceptStatus.forEach(cs => {
+                const tag = document.createElement('span');
+                tag.className = `px-2 py-0.5 rounded text-[10px] font-bold ${
+                    cs.matched ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-slate-800 text-slate-400 border border-slate-700'
+                }`;
+                tag.textContent = `${cs.matched ? '✓' : '✕'} ${cs.name}`;
+                keywordsBox.appendChild(tag);
+            });
+        }
+
+        function nextQuestion() {
+            playSound('click');
+            if (appState.currentIndex < 14) {
+                appState.currentIndex++;
+                renderCurrentQuestion();
+            } else {
+                confirmFinishEarly();
+            }
+        }
+
+        function prevQuestion() {
+            playSound('click');
+            if (appState.currentIndex > 0) {
+                appState.currentIndex--;
+                renderCurrentQuestion();
+            }
+        }
+
+        function jumpToQuestion(idx) {
+            appState.currentIndex = idx;
+            renderCurrentQuestion();
+        }
+
+        // Finish & Generate Evaluation Report
+        function finishQuiz() {
+            closeConfirmModal();
+            clearInterval(appState.timerInterval);
+
+            let totalScores = 0;
+            let totalMatchedConcepts = 0;
+            let totalPossibleConcepts = 0;
+            let totalWordsSum = 0;
+
+            appState.evaluatedResults = QUESTION_BANK.map((q, idx) => {
+                const userAns = appState.answers[idx];
+                const words = countWords(userAns);
+                totalWordsSum += words;
+
+                const evalRes = evaluateEssayAnswer(userAns, q);
+                totalScores += evalRes.score;
+                totalMatchedConcepts += evalRes.matchedConceptsCount;
+                totalPossibleConcepts += evalRes.totalConceptsCount;
+
+                return {
+                    questionObj: q,
+                    userAnswer: userAns,
+                    wordCount: words,
+                    evaluation: evalRes
+                };
+            });
+
+            // Overall Score 0 - 100
+            const finalScore = Math.round(totalScores / 15);
+            const accuracy = Math.round((totalMatchedConcepts / totalPossibleConcepts) * 100);
+
+            // Grade Determination
+            let grade = { text: "Predikat D (Perlu Belajar Lebih Banyak)", class: "bg-rose-500/20 text-rose-300 border border-rose-500/30" };
+            if (finalScore >= 85) {
+                grade = { text: "Predikat A (Sangat Memuaskan & Sangat Lengkap)", class: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" };
+            } else if (finalScore >= 70) {
+                grade = { text: "Predikat B (Baik / Tuntas)", class: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30" };
+            } else if (finalScore >= 55) {
+                grade = { text: "Predikat C (Cukup / Perlu Penyempurnaan)", class: "bg-amber-500/20 text-amber-300 border border-amber-500/30" };
+            }
+
+            // Update DOM
+            document.getElementById('result-score-num').textContent = finalScore;
+            document.getElementById('score-circle-path').setAttribute('stroke-dasharray', `${finalScore}, 100`);
+
+            const gradeBadge = document.getElementById('grade-badge');
+            gradeBadge.textContent = grade.text;
+            gradeBadge.className = `px-4 py-1.5 rounded-xl font-bold text-xs sm:text-sm ${grade.class}`;
+
+            document.getElementById('stat-words').textContent = `${totalWordsSum} Kata`;
+            document.getElementById('stat-concepts').textContent = `${totalMatchedConcepts} / ${totalPossibleConcepts}`;
+            document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
+
+            const mins = String(Math.floor(appState.timerSeconds / 60)).padStart(2, '0');
+            const secs = String(appState.timerSeconds % 60).padStart(2, '0');
+            document.getElementById('stat-time').textContent = `${mins}:${secs}`;
+
+            const headline = document.getElementById('result-headline');
+            const subtext = document.getElementById('result-subtext');
+
+            if (finalScore >= 70) {
+                headline.textContent = "Uraian Luar Biasa & Tuntas! 🎉";
+                subtext.textContent = "Pemahaman kamu mengenai materi PJOK Kelas XII sangat baik.";
+                playSound('finish');
+                triggerConfetti();
+            } else {
+                headline.textContent = "Tetap Semangat Berlatih! 💪";
+                subtext.textContent = "Pelajari kunci jawaban ideal di bawah ini untuk memperkaya pemahaman istilah teori PJOK kamu.";
+                playSound('wrong');
+            }
+
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+
+            renderReviewCards('all');
+        }
+
+        // Filter & Render Review Cards
+        function filterReview(f) {
+            playSound('click');
+            appState.filter = f;
+            document.getElementById('filter-all').className = `flex-1 sm:flex-initial px-3 py-1.5 rounded-lg font-semibold ${f === 'all' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'}`;
+            document.getElementById('filter-high').className = `flex-1 sm:flex-initial px-3 py-1.5 rounded-lg font-semibold ${f === 'high' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'}`;
+            document.getElementById('filter-low').className = `flex-1 sm:flex-initial px-3 py-1.5 rounded-lg font-semibold ${f === 'low' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'}`;
+            renderReviewCards(f);
+        }
+
+        function renderReviewCards(filter) {
+            const listContainer = document.getElementById('review-cards-list');
+            listContainer.innerHTML = '';
+
+            appState.evaluatedResults.forEach((item, index) => {
+                const score = item.evaluation.score;
+                if (filter === 'high' && score < 80) return;
+                if (filter === 'low' && score >= 80) return;
+
+                const q = item.questionObj;
+                const card = document.createElement('div');
+                card.className = `p-4 sm:p-6 rounded-3xl border glass-panel space-y-4 ${
+                    score >= 80 ? 'border-emerald-500/30' : score >= 50 ? 'border-amber-500/30' : 'border-rose-500/30'
+                }`;
+
+                // Status Badge
+                let statusBadge = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Sangat Lengkap (${score}%)</span>`;
+                if (score < 80 && score >= 50) {
+                    statusBadge = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">Cukup Lengkap (${score}%)</span>`;
+                } else if (score < 50) {
+                    statusBadge = `<span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30">Perlu Dilengkapi (${score}%)</span>`;
+                }
+
+                // Render concept tags
+                let conceptTagsHtml = item.evaluation.conceptStatus.map(cs => `
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold ${
+                        cs.matched ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                    }">
+                        ${cs.matched ? '✓' : '✕'} ${cs.name}
+                    </span>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-white">Soal Uraian #${index + 1}</span>
+                            ${statusBadge}
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-semibold">${q.topic}</span>
+                    </div>
+
+                    <p class="text-sm sm:text-base font-bold text-white leading-relaxed">
+                        ${q.question}
+                    </p>
+
+                    <!-- User Answer Box -->
+                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Jawaban Uraian Anda (${item.wordCount} Kata):</span>
+                            <span class="text-[10px] font-mono text-slate-500">Analisis Konsep</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-200 leading-relaxed font-mono whitespace-pre-line">
+                            ${item.userAnswer.trim() ? item.userAnswer : '<span class="italic text-slate-500">(Tidak ada jawaban uraian yang diketik)</span>'}
+                        </p>
+                        <div class="pt-2 border-t border-slate-800 flex flex-wrap gap-1.5">
+                            ${conceptTagsHtml}
+                        </div>
+                    </div>
+
+                    <!-- Ideal Answer Model Box -->
+                    <div class="p-4 rounded-2xl bg-cyan-950/20 border border-cyan-500/30 space-y-2">
+                        <span class="text-[10px] text-cyan-300 uppercase font-bold tracking-wider block">Kunci Jawaban Uraian Ideal / Baku:</span>
+                        <p class="text-xs sm:text-sm text-cyan-100 leading-relaxed whitespace-pre-line">
+                            ${q.idealAnswer}
+                        </p>
+                    </div>
+
+                    <!-- Material Explanation -->
+                    <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-xs text-slate-300 space-y-1">
+                        <span class="font-bold text-neon-cyan block">📘 Pembahasan Ringkas:</span>
+                        <p class="leading-relaxed text-slate-300 text-[11px] sm:text-xs">${q.explanation}</p>
+                    </div>
+                `;
+
+                listContainer.appendChild(card);
+            });
+
+            if (listContainer.children.length === 0) {
+                listContainer.innerHTML = `<p class="text-center text-slate-500 text-xs py-8">Tidak ada soal uraian pada kategori filter ini.</p>`;
+            }
+        }
+
+        function goToHome() {
+            playSound('click');
+            clearInterval(appState.timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('home-screen').classList.remove('hidden');
+            closeConfirmModal();
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 85,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
